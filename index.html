@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Web Development Quiz</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f6fb;
+    color:#222;
+    transition:.3s;
+}
+
+header{
+    background:linear-gradient(135deg,#4b2aad,#7b5be6);
+    color:white;
+    padding:25px 8%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+}
+
+nav a:hover{
+    text-decoration:underline;
+}
+
+.dark-btn{
+    background:white;
+    color:#4b2aad;
+    border:0;
+    padding:10px 15px;
+    border-radius:20px;
+    cursor:pointer;
+}
+
+.hero{
+    text-align:center;
+    padding:70px 20px;
+    background:white;
+}
+
+.hero h1{
+    font-size:45px;
+    color:#4b2aad;
+    margin-bottom:15px;
+}
+
+.hero p{
+    font-size:18px;
+    color:#666;
+    margin-bottom:25px;
+}
+
+.search{
+    width:60%;
+    padding:15px;
+    border:2px solid #ddd;
+    border-radius:30px;
+    outline:none;
+}
+
+.container{
+    width:85%;
+    margin:40px auto;
+}
+
+.title{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.title h2{
+    font-size:32px;
+    color:#4b2aad;
+}
+
+.categories{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:30px;
+}
+
+.categories button{
+    padding:12px 22px;
+    border:0;
+    border-radius:25px;
+    background:#e5defc;
+    color:#4b2aad;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.categories button:hover{
+    background:#4b2aad;
+    color:white;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:25px;
+}
+
+.card{
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 5px 20px #ddd;
+    transition:.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.card h3{
+    color:#4b2aad;
+    margin-bottom:15px;
+}
+
+.card p{
+    color:#555;
+    line-height:1.6;
+}
+
+.answer{
+    display:none;
+    background:#f0edff;
+    margin-top:15px;
+    padding:15px;
+    border-radius:10px;
+}
+
+.card button{
+    margin-top:15px;
+    padding:10px 18px;
+    background:#4b2aad;
+    color:white;
+    border:0;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.quiz{
+    margin-top:50px;
+    background:white;
+    padding:35px;
+    border-radius:15px;
+    box-shadow:0 5px 20px #ddd;
+}
+
+.quiz h2{
+    color:#4b2aad;
+    margin-bottom:20px;
+}
+
+.option{
+    display:block;
+    width:100%;
+    text-align:left;
+    margin:10px 0;
+    padding:15px;
+    background:#f4f4f4;
+    border:1px solid #ddd;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.option:hover{
+    background:#e5defc;
+}
+
+#result{
+    margin-top:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.progress{
+    width:100%;
+    height:12px;
+    background:#ddd;
+    border-radius:10px;
+    margin:20px 0;
+}
+
+.progress-bar{
+    width:40%;
+    height:100%;
+    background:#4b2aad;
+    border-radius:10px;
+}
+
+.contact{
+    margin-top:50px;
+    background:#4b2aad;
+    color:white;
+    padding:45px;
+    border-radius:15px;
+    text-align:center;
+}
+
+.contact input,
+.contact textarea{
+    width:80%;
+    padding:13px;
+    margin:8px;
+    border:0;
+    border-radius:7px;
+}
+
+.contact button{
+    padding:12px 30px;
+    border:0;
+    border-radius:7px;
+    background:white;
+    color:#4b2aad;
+    cursor:pointer;
+}
+
+footer{
+    margin-top:50px;
+    background:#171717;
+    color:white;
+    text-align:center;
+    padding:25px;
+}
+
+.dark{
+    background:#151515;
+    color:white;
+}
+
+.dark .hero,
+.dark .card,
+.dark .quiz{
+    background:#242424;
+    color:white;
+}
+
+.dark .card p{
+    color:#ccc;
+}
+
+.dark .hero p{
+    color:#ccc;
+}
+
+@media(max-width:800px){
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    nav{
+        display:none;
+    }
+
+    .search{
+        width:90%;
+    }
+
+    .hero h1{
+        font-size:32px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">WebQuiz</div>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#questions">Questions</a>
+<a href="#quiz">Quiz</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<button class="dark-btn" onclick="darkMode()">Dark Mode</button>
+
+</header>
+
+<section class="hero" id="home">
+
+<h1>Web Development Quiz</h1>
+
+<p>Test your knowledge of HTML, CSS and JavaScript</p>
+
+<input 
+type="text"
+class="search"
+id="search"
+placeholder="Search questions..."
+onkeyup="searchQuestions()">
+
+</section>
+
+<div class="container">
+
+<div class="title" id="questions">
+<h2>Questions & Answers</h2>
+<p>Click the button to view the answer.</p>
+</div>
+
+<div class="categories">
+<button onclick="filterCards('all')">All</button>
+<button onclick="filterCards('html')">HTML</button>
+<button onclick="filterCards('css')">CSS</button>
+<button onclick="filterCards('js')">JavaScript</button>
+</div>
+
+<div class="grid">
+
+<div class="card html">
+<h3>1. What is HTML?</h3>
+<p>HTML is the standard markup language used to create webpages.</p>
+<button onclick="toggleAnswer(1)">Show Answer</button>
+<div class="answer" id="a1">
+HTML stands for HyperText Markup Language. It defines the structure of a webpage.
+</div>
+</div>
+
+<div class="card html">
+<h3>2. What is an HTML tag?</h3>
+<p>HTML tags are used to define elements on a webpage.</p>
+<button onclick="toggleAnswer(2)">Show Answer</button>
+<div class="answer" id="a2">
+Examples include heading, paragraph, image, link and table tags.
+</div>
+</div>
+
+<div class="card html">
+<h3>3. What is the use of the &lt;a&gt; tag?</h3>
+<p>The anchor tag is used to create hyperlinks.</p>
+<button onclick="toggleAnswer(3)">Show Answer</button>
+<div class="answer" id="a3">
+The &lt;a&gt; tag connects one webpage to another webpage or resource.
+</div>
+</div>
+
+<div class="card html">
+<h3>4. What is the use of the &lt;img&gt; tag?</h3>
+<p>It is used to display images.</p>
+<button onclick="toggleAnswer(4)">Show Answer</button>
+<div class="answer" id="a4">
+The img tag displays an image using the src attribute.
+</div>
+</div>
+
+<div class="card css">
+<h3>5. What is CSS?</h3>
+<p>CSS is used to style HTML webpages.</p>
+<button onclick="toggleAnswer(5)">Show Answer</button>
+<div class="answer" id="a5">
+CSS stands for Cascading Style Sheets.
+</div>
+</div>
+
+<div class="card css">
+<h3>6. What is a CSS selector?</h3>
+<p>A selector identifies the HTML element to be styled.</p>
+<button onclick="toggleAnswer(6)">Show Answer</button>
+<div class="answer" id="a6">
+Examples are element, class and ID selectors.
+</div>
+</div>
+
+<div class="card css">
+<h3>7. What is Flexbox?</h3>
+<p>Flexbox is a CSS layout system.</p>
+<button onclick="toggleAnswer(7)">Show Answer</button>
+<div class="answer" id="a7">
+Flexbox helps arrange elements in rows or columns.
+</div>
+</div>
+
+<div class="card css">
+<h3>8. What is responsive design?</h3>
+<p>Responsive design makes websites work on different screen sizes.</p>
+<button onclick="toggleAnswer(8)">Show Answer</button>
+<div class="answer" id="a8">
+Media queries and flexible layouts are commonly used for responsive design.
+</div>
+</div>
+
+<div class="card js">
+<h3>9. What is JavaScript?</h3>
+<p>JavaScript adds functionality and interaction to webpages.</p>
+<button onclick="toggleAnswer(9)">Show Answer</button>
+<div class="answer" id="a9">
+JavaScript can change webpage content, handle events and perform calculations.
+</div>
+</div>
+
+<div class="card js">
+<h3>10. What is a variable?</h3>
+<p>A variable stores a value in a program.</p>
+<button onclick="toggleAnswer(10)">Show Answer</button>
+<div class="answer" id="a10">
+JavaScript variables can be declared using let, const or var.
+</div>
+</div>
+
+</div>
+
+<div class="quiz" id="quiz">
+
+<h2>Quick Quiz</h2>
+
+<div class="progress">
+<div class="progress-bar"></div>
+</div>
+
+<h3 id="question">What does HTML stand for?</h3>
+
+<button class="option" onclick="checkAnswer(this,'correct')">
+HyperText Markup Language
+</button>
+
+<button class="option" onclick="checkAnswer(this,'wrong')">
+HighText Machine Language
+</button>
+
+<button class="option" onclick="checkAnswer(this,'wrong')">
+Hyper Tool Multi Language
+</button>
+
+<div id="result"></div>
+
+</div>
+
+<div class="contact" id="contact">
+
+<h2>Contact Us</h2>
+
+<p>Send your feedback</p>
+
+<input type="text" placeholder="Your Name">
+
+<input type="email" placeholder="Your Email">
+
+<textarea rows="5" placeholder="Your Message"></textarea>
+
+<br>
+
+<button onclick="sendMessage()">Submit</button>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>© 2026 WebQuiz | HTML • CSS • JavaScript</p>
+
+</footer>
+
+<script>
+
+function toggleAnswer(num){
+    let answer=document.getElementById("a"+num);
+
+    if(answer.style.display==="block"){
+        answer.style.display="none";
+    }else{
+        answer.style.display="block";
+    }
+}
+
+function darkMode(){
+    document.body.classList.toggle("dark");
+}
+
+function searchQuestions(){
+
+    let input=document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    let cards=document.querySelectorAll(".card");
+
+    cards.forEach(function(card){
+
+        let text=card.innerText.toLowerCase();
+
+        if(text.includes(input)){
+            card.style.display="block";
+        }else{
+            card.style.display="none";
+        }
+
+    });
+}
+
+function filterCards(category){
+
+    let cards=document.querySelectorAll(".card");
+
+    cards.forEach(function(card){
+
+        if(category==="all" ||
+           card.classList.contains(category)){
+            card.style.display="block";
+        }else{
+            card.style.display="none";
+        }
+
+    });
+}
+
+function checkAnswer(button,result){
+
+    let output=document.getElementById("result");
+
+    if(result==="correct"){
+        output.innerHTML="Correct Answer!";
+    }else{
+        output.innerHTML="Wrong Answer. Try Again!";
+    }
+}
+
+function sendMessage(){
+
+    alert("Thank you! Your message has been submitted.");
+
+}
+
+</script>
+
+</body>
+</html>
